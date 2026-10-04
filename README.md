@@ -1,22 +1,21 @@
 # Assignment 3 — Bridge Pattern
 
-
 **Student:** Niyazov Maksat  
-**Group:** SE - 2522 
+**Group:** SE-2522  
 **Topic:** A — Drawing  
 **Repository:** https://github.com/DevMax8/bridge-pattern-drawing-java  
-**Base Commit:** 278a9bd6ec26f38e5c05a5505ca5f0a0a135f0b4ca5f0a0a135f0b4
+**Base Commit:** `278a9bd6ec26f38e5c05a5505ca5f0a0a135f0b4`
 
 ## Project Overview
 
-This project demonstrates the Bridge design pattern using a drawing application.
+This project demonstrates the **Bridge Design Pattern** using a drawing application.
 
 The application separates two independently varying hierarchies:
 
 - **Abstraction hierarchy:** `Shape` → `Circle`, `Square`
 - **Implementation hierarchy:** `Renderer` → `VectorRenderer`, `RasterRenderer`, `AsciiRenderer`
 
-The `Shape` abstraction stores a reference to the `Renderer` interface. The concrete shapes delegate rendering operations through this interface, allowing the abstraction and implementation hierarchies to vary independently.
+The `Shape` abstraction stores a reference to the `Renderer` interface. Concrete shapes delegate rendering operations through this interface, allowing the abstraction and implementation hierarchies to vary independently.
 
 ## Role Map
 
@@ -26,9 +25,9 @@ The `Shape` abstraction stores a reference to the `Renderer` interface. The conc
 | A1 — Refined Abstraction | `Circle` | `src/bridge/Circle.java` |
 | A2 — Refined Abstraction | `Square` | `src/bridge/Square.java` |
 | Implementor | `Renderer` | `src/bridge/Renderer.java` |
-| I1 | `VectorRenderer` | `src/bridge/VectorRenderer.java` |
-| I2 | `RasterRenderer` | `src/bridge/RasterRenderer.java` |
-| I3 | `AsciiRenderer` | `src/bridge/AsciiRenderer.java` |
+| I1 — Concrete Implementor | `VectorRenderer` | `src/bridge/VectorRenderer.java` |
+| I2 — Concrete Implementor | `RasterRenderer` | `src/bridge/RasterRenderer.java` |
+| I3 — Concrete Implementor | `AsciiRenderer` | `src/bridge/AsciiRenderer.java` |
 | Client | `Main` | `src/Main.java` |
 
 ## Bridge Implementation
@@ -41,7 +40,7 @@ The interface-typed bridge reference is stored in `Shape`:
 protected Renderer renderer;
 ```
 
-`Shape` depends on the `Renderer` interface rather than concrete renderer implementations.
+`Shape` depends on the `Renderer` interface rather than on concrete renderer implementations.
 
 ### execute()
 
@@ -58,14 +57,14 @@ public abstract String execute();
 The implementation can be replaced at runtime using:
 
 ```java
-public void setImplementation(Renderer renderer)
+public void setImplementation(Renderer renderer);
 ```
 
-This changes the renderer used by an existing shape without creating a new shape object.
+This allows the renderer of an existing shape object to be changed without creating a new shape.
 
-## T5 Runtime Switch
+## T5 — Runtime Switch
 
-The runtime switching demonstration is implemented in the `testRuntimeSwitch()` method in `src/Main.java`.
+The runtime-switching demonstration is implemented in the `testRuntimeSwitch()` method in `src/Main.java`.
 
 T5 performs the following checks:
 
@@ -129,7 +128,7 @@ The actual T1–T7 execution results are stored in `demo-output.txt`.
 
 ## Independent Extension
 
-The initial implementation contains:
+The base implementation contains:
 
 - I1 — `VectorRenderer`
 - I2 — `RasterRenderer`
@@ -145,6 +144,27 @@ The existing `Shape`, `Circle`, `Square`, `Renderer`, `VectorRenderer`, and `Ras
 T6 and T7 demonstrate the new implementation with both refined abstractions.
 
 The changes from the base version to the extension are recorded in `extension.diff`.
+
+### Extension Verification
+
+Base commit:
+
+```text
+278a9bd6ec26f38e5c05a5505ca5f0a0a135f0b4
+```
+
+The extension changes only:
+
+```text
+src/Main.java
+src/bridge/AsciiRenderer.java
+```
+
+The extension diff can be verified with:
+
+```bash
+git diff 278a9bd6ec26f38e5c05a5505ca5f0a0a135f0b4 HEAD -- src
+```
 
 ## Project Structure
 
@@ -165,3 +185,17 @@ README.md
 demo-output.txt
 extension.diff
 ```
+
+## Design Pattern Summary
+
+The Bridge Pattern separates an abstraction from its implementation so that both can vary independently.
+
+In this project:
+
+- `Shape` represents the abstraction.
+- `Circle` and `Square` are refined abstractions.
+- `Renderer` represents the implementor.
+- `VectorRenderer`, `RasterRenderer`, and `AsciiRenderer` are concrete implementors.
+- `setImplementation()` demonstrates that the implementation can be changed at runtime without replacing the abstraction object.
+
+This design makes it possible to add new renderer implementations without modifying the existing shape hierarchy.
