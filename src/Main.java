@@ -1,3 +1,4 @@
+import bridge.AsciiRenderer;
 import bridge.Circle;
 import bridge.RasterRenderer;
 import bridge.Renderer;
@@ -25,6 +26,7 @@ public class Main {
 
         Renderer vector = new VectorRenderer();
         Renderer raster = new RasterRenderer();
+        Renderer ascii = new AsciiRenderer();
 
         Circle circleVector = new Circle("C1", 2, vector);
 
@@ -63,6 +65,24 @@ public class Main {
         );
 
         testRuntimeSwitch();
+
+        Circle circleAscii = new Circle("C3", 2, ascii);
+
+        check(
+                "T6",
+                "Circle + AsciiRenderer",
+                "ASCII circle radius=2",
+                circleAscii.execute()
+        );
+
+        Square squareAscii = new Square("S3", 3, ascii);
+
+        check(
+                "T7",
+                "Square + AsciiRenderer",
+                "ASCII square side=3",
+                squareAscii.execute()
+        );
 
         System.out.println("SUMMARY: " + passed + "/" + total + " PASS");
     }
