@@ -1,0 +1,88 @@
+@startuml
+title Bridge Pattern - Drawing Application
+
+skinparam classAttributeIconSize 0
+
+interface Renderer {
+    + renderCircle(radius : int) : String
+    + renderSquare(side : int) : String
+}
+
+abstract class Shape {
+    - id : String
+    # renderer : Renderer
+    --
+    # Shape(id : String, renderer : Renderer)
+    + getId() : String
+    + setImplementation(renderer : Renderer) : void
+    + execute() : String
+}
+
+class Circle {
+    - radius : int
+    --
+    + Circle(id : String, radius : int, renderer : Renderer)
+    + getRadius() : int
+    + execute() : String
+}
+
+class Square {
+    - side : int
+    --
+    + Square(id : String, side : int, renderer : Renderer)
+    + getSide() : int
+    + execute() : String
+}
+
+class VectorRenderer {
+    + renderCircle(radius : int) : String
+    + renderSquare(side : int) : String
+}
+
+class RasterRenderer {
+    + renderCircle(radius : int) : String
+    + renderSquare(side : int) : String
+}
+
+class AsciiRenderer {
+    + renderCircle(radius : int) : String
+    + renderSquare(side : int) : String
+}
+
+class Main {
+    - passed : int
+    - total : int
+    --
+    + main(args : String[]) : void
+    - runDemo() : void
+    - testRuntimeSwitch() : void
+    - check(testId : String, participants : String, expected : String, actual : String) : void
+}
+
+Shape <|-- Circle
+Shape <|-- Square
+
+Renderer <|.. VectorRenderer
+Renderer <|.. RasterRenderer
+Renderer <|.. AsciiRenderer
+
+Shape o--> Renderer : bridge
+
+Main ..> Circle : creates
+Main ..> Square : creates
+Main ..> VectorRenderer : creates
+Main ..> RasterRenderer : creates
+Main ..> AsciiRenderer : creates
+
+note right of Shape
+  Abstraction
+  Stores Renderer reference
+  Runtime switching through
+  setImplementation()
+end note
+
+note right of Renderer
+  Implementor
+end note
+
+@enduml
